@@ -1,0 +1,401 @@
+<!doctype html>
+<html>
+<head>
+<title>Project 3</title>
+<script>
+
+    ///////////////////////Global Variables///////////////////
+	var canvas;
+	var context;
+	var timer;
+	var timer2;
+	var timer3;
+	var timer4;
+	var timer5;
+	var timer6;
+	var timer7;
+	var timer8;
+	var particles;
+	var curves;
+	var quads;
+	var ovals;
+	var flipcurves;
+	var quads = [];
+	var ovals = [];
+	var flipcurves = [];
+	var circles = [];
+	var particles = [];
+	var curves = [];
+	var colors = ["#3333ff", "#000099", "#4d79ff", "#99bbff", "#b3d9ff"];
+	
+	////////////////////////////Functions/////////////////////
+	
+	function init() {
+        canvas = document.getElementById('canvas');
+        context = canvas.getContext("2d");
+		
+		timer = setInterval(moveParticles, 30);
+		timer2 = setInterval(moveCurves, 12);
+		timer3 = setInterval(moveflipCurves, 8);
+		timer4 = setInterval(makeParticles, 4500);
+		timer5 = setInterval(makeCurves, 3500); 
+		timer6 = setInterval(makeFlipCurves, 3500); 
+		timer7 = setInterval(moveQuads, 40);
+		timer8 = setInterval(makeQuads, 3500); 		
+		timer9 = setInterval(moveOvals, 40);
+		timer10 = setInterval(makeOvals, 3500);
+		
+		resizeCanvas();
+		window.addEventListener('resize', resizeCanvas, false);
+        window.addEventListener('orientationchange', resizeCanvas, false);
+		canvas.onclick = function(event) {
+			handleClick(event.clientX, event.clientY);
+		};
+		//controls how fast the clicked cirlceS
+		timer = setInterval(resizeCanvas, 20);
+	}
+
+///////////////////Quads////////////////	
+	function makeQuads() {
+		for(var q = 0; q < 6; q++) {
+			quads.push(new Quads());
+		}
+	}
+	
+	function Quads() {
+		this.x = Math.round(Math.random())*canvas.width;
+		this.y = Math.round(Math.random())*canvas.height;
+		this.vx = Math.random()*40-10;
+		this.vy = Math.random()*40-10;
+		this.color = colors[Math.floor(Math.random()*colors.length)];
+	}
+	
+	function moveQuads() {
+	 	context.globalCompositeOperation = "source-over";
+		context.fillStyle = "rgba(0, 0, 0, .5)";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.globalCompositeOperation = "lighter";
+			for(var m = 0; m < quads.length; m++) {
+				var q = quads[q];
+				context.beginPath();
+				context.moveTo(10, 800);
+				context.arc(q.x, q.y, q.radius, 0, true, degreesToRadians(360));
+				context.bezierCurveTo(900, 490, 20, 69, 85, 120);
+				context.lineTo(150, 110);
+				context.lineTo(115, 210);
+				context.closePath()
+				context.stroke();
+				context.lineWidth="6";
+				context.fillStyle = q.color;
+				context.fill();
+				q.x += q.vx;
+				q.y += q.vy;
+				if(q.x < -50) q.x = canvas.width+50;
+				if(q.y < -50) q.y = canvas.height+50;
+				if(q.x > canvas.width+50) q.x = -50;
+				if(q.y > canvas.height-50) q.y = -50;
+				if(q.radius > 0) q.radius -= 1 ;
+			}
+	}
+//////////////////Curves///////////////	
+	
+	function makeCurves() {
+		for(var j = 0; j < 6; j++) {
+			curves.push(new Curve());
+		}
+	}
+	
+		function makeFlipCurves() {
+		for(var k = 0; k < 6; k++) {
+			flipcurves.push(new flipCurves());
+		}
+	}
+		function Curve() {
+		this.x = Math.round(Math.random())*canvas.width;
+		this.y = Math.round(Math.random())*canvas.height;
+		this.vx = Math.random()*40-10;
+		this.vy = Math.random()*40-10;
+		this.color = colors[Math.floor(Math.random()*colors.length)];
+		this.radius = 50;
+	}
+	
+		function flipCurves() {
+		this.x = Math.round(Math.random())*canvas.width;
+		this.y = Math.round(Math.random())*canvas.height;
+		this.vx = Math.random()*40-10;
+		this.vy = Math.random()*40-10;
+		this.color = colors[Math.floor(Math.random()*colors.length)];
+		this.radius = 50;
+	}
+	
+	function moveCurves() {
+	 	context.globalCompositeOperation = "source-over";
+		context.fillStyle = "rgba(0, 0, 0, .5)";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.globalCompositeOperation = "lighter";
+			for(var j = 0; j < curves.length; j++) {
+				var c = curves[j];
+				context.beginPath();
+				context.moveTo(110, 90);
+				context.arc(c.x, c.y, c.radius, 0, true, degreesToRadians(360));
+				context.bezierCurveTo(10, 10, 90, 180, 50, 110);
+				context.lineTo(90, 110);
+				context.lineTo(110, 110);
+				context.closePath();
+				context.fillStyle = c.color;
+				context.fill();
+				c.x += c.vx;
+				c.y += c.vy;
+				if(c.x < -50) c.x = canvas.width+50;
+				if(c.y < -50) c.y = canvas.height+50;
+				if(c.x > canvas.width+50) c.x = -50;
+				if(c.y > canvas.height-50) c.y = -50;
+				if(c.radius > 0) c.radius -= 1 ;
+			}
+	}
+	
+	function moveflipCurves() {
+		context.globalCompositeOperation = "source-over";
+		context.fillStyle = "rgba(0, 0, 0, .5)";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.globalCompositeOperation = "lighter";
+			for(var k = 0; k < flipcurves.length; k++) {
+				var f = flipcurves[k];
+				context.beginPath();
+				context.moveTo(110, 90);
+				context.arc(f.x, f.y, f.radius, 0, true, degreesToRadians(360));
+				context.bezierCurveTo(10, 10, 90, 180, 50, 110);
+				context.lineTo(90, 110);
+				context.lineTo(110, 110);
+				context.closePath();
+				context.fill();
+				f.x += f.vx;
+				f.y += f.vy;
+				if(f.x < -50) f.x = canvas.width+50;
+				if(f.y < -50) f.y = canvas.height+50;
+				if(f.x > canvas.width+50) f.x = -50;
+				if(f.y > canvas.height-50) f.y = -50;
+				if(f.radius > 0) f.radius -= 1 ;
+			}
+	}
+	
+///////////Particles///////////
+
+	function makeParticles() {
+		for(var i = 0; i < 150; i++) {
+			particles.push(new Particle());
+		}
+	}
+	
+	function Particle() {
+		this.x = Math.round(Math.random())*canvas.width;
+		this.y = Math.round(Math.random())*canvas.height;
+		this.vx = Math.random()*10-5;
+		this.vy = Math.random()*10-5;
+		this.color = colors[Math.floor(Math.random()*colors.length)];
+		this.radius = 75;
+	}
+	
+	function moveParticles() {
+		context.globalCompositeOperation = "source-over";
+		context.fillStyle = "rgba(0, 0, 0, .1)";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.globalCompositeOperation = "lighter";
+			for(var i = 0; i < particles.length; i++) {
+				var p = particles[i];
+				context.beginPath();
+				context.arc(p.x, p.y, p.radius, 0, degreesToRadians(360), true);
+				context.fillStyle = p.color;
+				context.fill();
+				p.x += p.vx;
+				p.y += p.vy;
+				if(p.x < -50) p.x = canvas.width+50;
+				if(p.y < -50) p.y = canvas.height+50;
+				if(p.x > canvas.width+50) p.x = -50;
+				if(p.y > canvas.height-50) p.y = -50;
+				if(p.radius > 0) p.radius -= 1 ;
+			}
+	}
+	
+////////////oval/////////////
+
+function makeOvals() {
+		for(var h = 0; h < 150; h++) {
+			ovals.push(new Oval());
+		}
+	}
+	
+	function Oval() {
+		this.x = Math.round(Math.random())*canvas.width;
+		this.y = Math.round(Math.random())*canvas.height;
+		this.vx = Math.random()*10-5;
+		this.vy = Math.random()*10-5;
+		this.color = colors[Math.floor(Math.random()*colors.length)];
+		this.radius = 55;
+	}
+	
+	function moveOvals() {
+		context.globalCompositeOperation = "source-over";
+		context.fillStyle = "rgba(0, 0, 0, .1)";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.globalCompositeOperation = "lighter";
+			for(var h = 0; h < ovals.length; h++) {
+				var o = ovals[o];
+				context.beginPath();
+				context.arc(o.x, o.y, o.radius, 15, degreesToRadians(360), true);
+				context.fillStyle = o.color;
+				context.fill();
+				o.x += o.vx;
+				o.y += o.vy;
+				if(o.x < -20) o.x = canvas.width+20;
+				if(o.y < -20) o.y = canvas.height+20;
+				if(o.x > canvas.width+20) o.x = -20;
+				if(o.y > canvas.height-20) o.y = -20;
+				if(o.radius > 0) o.radius -= 20 ;
+			}
+	}
+	
+	
+	function Circle(x, y, color) {
+		this.x = x;
+		this.y = y;
+		this.dx = Math.random()*4-2;
+		this.dy = Math.random()*4-2;
+		this.color = color;
+	}
+
+
+	function handleClick(x, y) {
+	     var found = false;
+		 for (var i=0; i<circles.length; i++) {
+			d = Math.sqrt((circles[i].x - x)*(circles[i].x - x) + (circles[i].y - y)*(circles[i].y - y));
+			if (d <= 30) {
+				circles.splice(i, 1);
+				found = true;
+			}
+		 }
+		 fillBackgroundColor();
+		 if (!found) {
+			var color = colors[Math.floor(Math.random()*colors.length)];
+			circles.push(new Circle(x, y, color));
+		}
+		for (var i=0; i<circles.length; i++) {
+			drawCircle(circles[i]);
+		}
+	  }
+	  function drawCircle(circle) {
+		 context.beginPath();
+		 context.arc(circle.x, circle.y, 20, 4, degreesToRadians(360), true);
+		 context.arc(circle.x, circle.y, 5, 1, degreesToRadians(360), true);
+		 context.fillStyle = circle.color;
+		 context.fill();
+		 context.stroke();
+		 context.strokeStyle="white";
+		 if (circle.x + circle.dx > canvas.width || circle.x + circle.dx < 0)
+			circle.dx = -circle.dx;
+		 if (circle.y + circle.dy > canvas.height || circle.y + circle.dy < 0)
+			circle.dy = -circle.dy;
+		 circle.x += circle.dx;
+		 circle.y += circle.dy;
+	  }
+	
+
+	
+	function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+		fillBackgroundColor();
+		for (var i=0; i<circles.length; i++) {
+			drawCircle(circles[i]);
+		}
+    }
+	
+	function fillBackgroundColor() {
+	
+	var my_gradient=context.createLinearGradient(0,0,0,100);
+		my_gradient.addColorStop(0,"black");
+		my_gradient.addColorStop(1,"white");
+		context.fillStyle=my_gradient;
+		context.fillRect(canvas.width, canvas.height, canvas.width, canvas.height);
+	}
+	
+	window.onload = init;
+	
+	function degreesToRadians(degrees) {
+		return (degrees * Math.PI)/180;
+	}
+
+</script>
+<style>
+
+html {
+  overflow: hidden;
+  height: 100%;
+  font-family: impact;
+  background: hsl(310, 30%, 0%) radial-gradient( hsl(210, 30%, 20%), hsl(210, 30%, 0%));
+}
+
+body {
+  margin: 0; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+    margin: 0;
+}
+
+#box {
+  text-align: center;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+#flashlight {
+  color: hsla(0,0%,0%,0);
+  perspective: 80px;
+  outline: none;
+}
+
+#flash {
+  display: inline-block;
+  text-shadow: #bbb 0 0 1px, #fff 0 -1px 2px, #fff 0 -3px 2px, rgba(0,0,0,0.8) 0 30px 25px;
+  transition: margin-left 0.3s cubic-bezier(0, 1, 0, 1);
+}
+    
+#box:hover #flash {
+   text-shadow: #111 0 0 1px, rgba(255,255,255,0.1) 0 1px 3px;
+  margin-left: 20px;
+  transition: margin-left 1s cubic-bezier(0, 0.75, 0, 1);
+}
+
+#light {
+  display: inline-block;
+  text-shadow: #111 0 0 1px, rgba(255,255,255,0.1) 0 1px 3px;
+}
+
+#box:hover #light {
+  text-shadow: #fff 0 0 4px, #fcffbb 0 0 20px;
+  transition:         transform 0.3s cubic-bezier(0, 0.75, 0, 1), text-shadow 0.1s ease-out;
+}
+
+#canvas-wrap { position:relative; width:1150px; height:1125px }
+#canvas-wrap canvas { position:absolute; top:0; left:0; z-index:0 }
+</style>
+</head>
+<body>
+
+<div id="canvas-wrap">
+<canvas id='canvas' width=500 height=500>
+</div>
+<div id="box">
+  <p id="flashlight">
+    <span id="flash">Strobe</span>
+    <span id="light">Lights</span>
+  </p>
+</div>
+
+</canvas>
+
+</body>	  
