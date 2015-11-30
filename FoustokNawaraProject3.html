@@ -73,7 +73,6 @@
 	function moveQuads() {
 	 	context.globalCompositeOperation = "source-over";
 		context.fillStyle = "rgba(0, 0, 0, .5)";
-		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.globalCompositeOperation = "lighter";
 			for(var m = 0; m < quads.length; m++) {
 				var q = quads[q];
@@ -131,7 +130,6 @@
 	function moveCurves() {
 	 	context.globalCompositeOperation = "source-over";
 		context.fillStyle = "rgba(0, 0, 0, .5)";
-		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.globalCompositeOperation = "lighter";
 			for(var j = 0; j < curves.length; j++) {
 				var c = curves[j];
@@ -199,7 +197,6 @@
 	function moveParticles() {
 		context.globalCompositeOperation = "source-over";
 		context.fillStyle = "rgba(0, 0, 0, .1)";
-		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.globalCompositeOperation = "lighter";
 			for(var i = 0; i < particles.length; i++) {
 				var p = particles[i];
@@ -237,7 +234,6 @@ function makeOvals() {
 	function moveOvals() {
 		context.globalCompositeOperation = "source-over";
 		context.fillStyle = "rgba(0, 0, 0, .1)";
-		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.globalCompositeOperation = "lighter";
 			for(var h = 0; h < ovals.length; h++) {
 				var o = ovals[o];
@@ -310,14 +306,14 @@ function makeOvals() {
 		}
     }
 	
-	function fillBackgroundColor() {
+	/*function fillBackgroundColor() {
 	
 	var my_gradient=context.createLinearGradient(0,0,0,100);
 		my_gradient.addColorStop(0,"black");
 		my_gradient.addColorStop(1,"white");
 		context.fillStyle=my_gradient;
 		context.fillRect(canvas.width, canvas.height, canvas.width, canvas.height);
-	}
+	}*/
 	
 	window.onload = init;
 	
