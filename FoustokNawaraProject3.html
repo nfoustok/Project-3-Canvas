@@ -18,10 +18,8 @@
 	var particles;
 	var curves;
 	var quads;
-	var ovals;
 	var flipcurves;
 	var quads = [];
-	var ovals = [];
 	var flipcurves = [];
 	var circles = [];
 	var particles = [];
@@ -39,11 +37,9 @@
 		timer3 = setInterval(moveflipCurves, 8);
 		timer4 = setInterval(makeParticles, 4500);
 		timer5 = setInterval(makeCurves, 3500); 
-		timer6 = setInterval(makeFlipCurves, 3500); 
-		timer7 = setInterval(moveQuads, 40);
-		timer8 = setInterval(makeQuads, 3500); 		
-		timer9 = setInterval(moveOvals, 40);
-		timer10 = setInterval(makeOvals, 3500);
+		timer6 = setInterval(makeFlipCurves, 3500); 	
+		timer7 = setInterval(moveQuads, 10);
+		timer8 = setInterval(makeQuads, 4500); 
 		
 		resizeCanvas();
 		window.addEventListener('resize', resizeCanvas, false);
@@ -55,36 +51,35 @@
 		timer = setInterval(resizeCanvas, 20);
 	}
 
-///////////////////Quads////////////////	
+
+	///////////////////Quads////////////////	
 	function makeQuads() {
-		for(var q = 0; q < 6; q++) {
+		for(var q = 0; q < 15; q++) {
 			quads.push(new Quads());
 		}
 	}
 	
 	function Quads() {
-		this.x = Math.round(Math.random())*canvas.width;
-		this.y = Math.round(Math.random())*canvas.height;
+		this.x = Math.random()*canvas.width;
+		this.y = Math.random()*canvas.height;
 		this.vx = Math.random()*40-10;
 		this.vy = Math.random()*40-10;
 		this.color = colors[Math.floor(Math.random()*colors.length)];
 	}
 	
 	function moveQuads() {
-	 	context.globalCompositeOperation = "source-over";
-		context.fillStyle = "rgba(0, 0, 0, .5)";
-		context.globalCompositeOperation = "lighter";
+		 	context.globalCompositeOperation = "source-over";
+			context.fillStyle = "rgba(0, 0, 0, .5)";
+			context.globalCompositeOperation = "lighter";
 			for(var m = 0; m < quads.length; m++) {
-				var q = quads[q];
+				var q = quads[m];
 				context.beginPath();
-				context.moveTo(10, 800);
-				context.arc(q.x, q.y, q.radius, 0, true, degreesToRadians(360));
-				context.bezierCurveTo(900, 490, 20, 69, 85, 120);
-				context.lineTo(150, 110);
-				context.lineTo(115, 210);
-				context.closePath()
-				context.stroke();
-				context.lineWidth="6";
+				context.moveTo(400,500);
+				context.lineTo(500,700);
+				context.lineTo(700,500);
+				context.lineTo(500,400);
+				context.bezierCurveTo(q.x, q.y, q.radius, 15, true, degreesToRadians(360));
+				context.closePath();
 				context.fillStyle = q.color;
 				context.fill();
 				q.x += q.vx;
@@ -96,6 +91,8 @@
 				if(q.radius > 0) q.radius -= 1 ;
 			}
 	}
+	
+
 //////////////////Curves///////////////	
 	
 	function makeCurves() {
@@ -105,17 +102,17 @@
 	}
 	
 		function makeFlipCurves() {
-		for(var k = 0; k < 6; k++) {
+		for(var k = 0; k < 2; k++) {
 			flipcurves.push(new flipCurves());
 		}
 	}
 		function Curve() {
 		this.x = Math.round(Math.random())*canvas.width;
 		this.y = Math.round(Math.random())*canvas.height;
-		this.vx = Math.random()*40-10;
-		this.vy = Math.random()*40-10;
+		this.vx = Math.random()*30-10;
+		this.vy = Math.random()*30-10;
 		this.color = colors[Math.floor(Math.random()*colors.length)];
-		this.radius = 50;
+		this.radius = 30;
 	}
 	
 		function flipCurves() {
@@ -124,7 +121,7 @@
 		this.vx = Math.random()*40-10;
 		this.vy = Math.random()*40-10;
 		this.color = colors[Math.floor(Math.random()*colors.length)];
-		this.radius = 50;
+		this.radius = 10;
 	}
 	
 	function moveCurves() {
@@ -155,17 +152,16 @@
 	function moveflipCurves() {
 		context.globalCompositeOperation = "source-over";
 		context.fillStyle = "rgba(0, 0, 0, .5)";
-		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.globalCompositeOperation = "lighter";
 			for(var k = 0; k < flipcurves.length; k++) {
 				var f = flipcurves[k];
 				context.beginPath();
-				context.moveTo(110, 90);
+				context.moveTo(200,300);
+				context.lineTo(300,400);
+				context.lineTo(400,200);
 				context.arc(f.x, f.y, f.radius, 0, true, degreesToRadians(360));
-				context.bezierCurveTo(10, 10, 90, 180, 50, 110);
-				context.lineTo(90, 110);
-				context.lineTo(110, 110);
 				context.closePath();
+				context.fillStyle = f.color;
 				context.fill();
 				f.x += f.vx;
 				f.y += f.vy;
@@ -180,18 +176,18 @@
 ///////////Particles///////////
 
 	function makeParticles() {
-		for(var i = 0; i < 150; i++) {
+		for(var i = 0; i < 15; i++) {
 			particles.push(new Particle());
 		}
 	}
 	
 	function Particle() {
-		this.x = Math.round(Math.random())*canvas.width;
-		this.y = Math.round(Math.random())*canvas.height;
-		this.vx = Math.random()*10-5;
-		this.vy = Math.random()*10-5;
+		this.x = Math.random()*canvas.width;
+		this.y = Math.random()*canvas.height;
+		this.vx = Math.random()*20-5;
+		this.vy = Math.random()*20-5;
 		this.color = colors[Math.floor(Math.random()*colors.length)];
-		this.radius = 75;
+		this.radius = 100;
 	}
 	
 	function moveParticles() {
@@ -201,12 +197,12 @@
 			for(var i = 0; i < particles.length; i++) {
 				var p = particles[i];
 				context.beginPath();
-				context.arc(p.x, p.y, p.radius, 0, degreesToRadians(360), true);
+				context.arc(p.x, p.y, p.radius, 10, degreesToRadians(360), true);
 				context.fillStyle = p.color;
 				context.fill();
 				p.x += p.vx;
 				p.y += p.vy;
-				if(p.x < -50) p.x = canvas.width+50;
+				if(p.x < -50) p.x = canvas.width+30;
 				if(p.y < -50) p.y = canvas.height+50;
 				if(p.x > canvas.width+50) p.x = -50;
 				if(p.y > canvas.height-50) p.y = -50;
@@ -214,42 +210,6 @@
 			}
 	}
 	
-////////////oval/////////////
-
-function makeOvals() {
-		for(var h = 0; h < 150; h++) {
-			ovals.push(new Oval());
-		}
-	}
-	
-	function Oval() {
-		this.x = Math.round(Math.random())*canvas.width;
-		this.y = Math.round(Math.random())*canvas.height;
-		this.vx = Math.random()*10-5;
-		this.vy = Math.random()*10-5;
-		this.color = colors[Math.floor(Math.random()*colors.length)];
-		this.radius = 55;
-	}
-	
-	function moveOvals() {
-		context.globalCompositeOperation = "source-over";
-		context.fillStyle = "rgba(0, 0, 0, .1)";
-		context.globalCompositeOperation = "lighter";
-			for(var h = 0; h < ovals.length; h++) {
-				var o = ovals[o];
-				context.beginPath();
-				context.arc(o.x, o.y, o.radius, 15, degreesToRadians(360), true);
-				context.fillStyle = o.color;
-				context.fill();
-				o.x += o.vx;
-				o.y += o.vy;
-				if(o.x < -20) o.x = canvas.width+20;
-				if(o.y < -20) o.y = canvas.height+20;
-				if(o.x > canvas.width+20) o.x = -20;
-				if(o.y > canvas.height-20) o.y = -20;
-				if(o.radius > 0) o.radius -= 20 ;
-			}
-	}
 	
 	
 	function Circle(x, y, color) {
@@ -306,14 +266,14 @@ function makeOvals() {
 		}
     }
 	
-	/*function fillBackgroundColor() {
+	function fillBackgroundColor() {
 	
 	var my_gradient=context.createLinearGradient(0,0,0,100);
 		my_gradient.addColorStop(0,"black");
 		my_gradient.addColorStop(1,"white");
 		context.fillStyle=my_gradient;
 		context.fillRect(canvas.width, canvas.height, canvas.width, canvas.height);
-	}*/
+	}
 	
 	window.onload = init;
 	
