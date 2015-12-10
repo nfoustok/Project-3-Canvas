@@ -7,7 +7,9 @@
     ///////////////////////Global Variables///////////////////
 	var canvas;
 	var context;
+
 	var timer;
+	var timer1;
 	var timer2;
 	var timer3;
 	var timer4;
@@ -15,32 +17,41 @@
 	var timer6;
 	var timer7;
 	var timer8;
+	var timer9;
+	
 	var particles;
 	var curves;
 	var quads;
 	var flipcurves;
+	
 	var quads = [];
 	var flipcurves = [];
 	var circles = [];
 	var particles = [];
 	var curves = [];
+	
 	var colors = ["#3333ff", "#000093", "#4d79ff", "#99bbff", "#b3d9ff"];
 
 	
-	////////////////////////////Functions/////////////////////
+	////////////////////////////Main Intervals/////////////////////
 	
 	function init() {
         canvas = document.getElementById('canvas');
         context = canvas.getContext("2d");
 		
-		timer = setInterval(moveParticles, 30);
-		timer2 = setInterval(moveCurves, 50);
-		timer3 = setInterval(moveflipCurves, 50);
-		timer4 = setInterval(makeParticles, 4500);
+		timer4 = setInterval(makeParticles, 3500);
 		timer5 = setInterval(makeCurves, 1500); 
-		timer6 = setInterval(makeFlipCurves, 3500); 	
-		timer7 = setInterval(moveQuads, 10);
-		timer8 = setInterval(makeQuads, 2500); 
+		timer6 = setInterval(makeFlipCurves, 1500); 	
+		timer8 = setInterval(makeQuads, 6500);
+		
+		timer9 = setTimeout(startPage, 20)
+		timer = setInterval(resizeCanvas, 50);
+		
+		timer7 = setInterval(moveQuads, 25);
+		timer2 = setInterval(moveCurves, 45);
+		timer3 = setInterval(moveflipCurves, 45);
+		timer1 = setInterval(moveParticles, 5);		
+
 		
 		resizeCanvas();
 		window.addEventListener('resize', resizeCanvas, false);
@@ -48,60 +59,120 @@
 		canvas.onclick = function(event) {
 			handleClick(event.clientX, event.clientY);
 		};
-		//controls how fast the clicked cirlceS
-		timer = setInterval(resizeCanvas, 20);
+
 	}
 
+	/////////////////////Start Screen////////////////////
+	
+	
+	
+	
+	//////////Keyboard Event/////////////////
+	
+	document.addEventListener("keyup",keyUpHandler, false);	
 
-	///////////////////Quads////////////////	
+	function keyUpHandler(event){
+	
+	var keyPressed = event.keyCode;
+	if (keyPressed == "27")
+		{
+		
+		function Square() {
+		 context.beginPath();
+		 context.moveTo(110,120);
+		context.lineTo(120,190);
+		context.lineTo(190,110);
+	    context.closePath();
+		 context.fillStyle = "red";
+		 context.fill();
+		
+		
+		/*alert("!!!");*/
+						}
+		}
+	}
+	
+	/////////////////////Quads/////////////////////
+	
 	function makeQuads() {
-		for(var q = 0; q < 4; q++) {
+		for(var m = 0; m < 10; m++) {
 			quads.push(new Quads());
 		}
 	}
 	
 	function Quads() {
+		this.radius = 15;
 		this.x = Math.random()*canvas.width;
 		this.y = Math.random()*canvas.height;
-		this.vx = Math.random()*40-10;
-		this.vy = Math.random()*40-10;
+		this.vx = Math.random()*4-2;
+		this.vy = Math.random()*4-2;
 		this.color = colors[Math.floor(Math.random()*colors.length)];
 	}
 	
 	function moveQuads() {
-		 	context.globalCompositeOperation = "source-over";
-			context.fillStyle = "rgba(0, 0, 0, .5)";
-			context.globalCompositeOperation = "lighter";
+		 	context.globalCompositeOperation = "lighter";
 			for(var m = 0; m < quads.length; m++) {
 				var r = quads[m];
 				context.beginPath();
-				context.arc(r.x, r.y, r.radius, 90, degreesToRadians(360), true);
+				context.arc(r.x, r.y, r.radius, 9, degreesToRadians(360), true);
 				context.fillStyle = r.color;
 				context.fill();
 				r.x += r.vx;
-				r.y += r.vy;
-				if(r.x < -50) r.x = canvas.width+30;
-				if(r.y < -50) r.y = canvas.height+50;
-				if(r.x > canvas.width+50) r.x = -50;
-				if(r.y > canvas.height-50) r.y = -50;
-				if(r.radius > 0) r.radius -= 1 ;
+				r.y += r.vy;  
+				if(r.x < -5) r.x = canvas.width+10;
+				if(r.y < -5) r.y = canvas.height+5;
+				if(r.x > canvas.width+5) r.x = -5;
+				if(r.y > canvas.height-5) r.y = -5;
+				if(r.radius > 0) r.radius = +10 ;
 			}
 	}
 	
 
-//////////////////Curves///////////////	
-	
-	function makeCurves() {
-		for(var j = 0; j < 6; j++) {
-			curves.push(new Curve());
-		}
-	}
+//////////////////FlipCurves///////////////	
 	
 		function makeFlipCurves() {
 		for(var k = 0; k < 6; k++) {
 			flipcurves.push(new flipCurves());
 		}
 	}
+	
+			function flipCurves() {
+		this.x = Math.round(Math.random())*canvas.width;
+		this.y = Math.round(Math.random())*canvas.height;
+		this.vx = Math.random()*20-10;
+		this.vy = Math.random()*20-10;
+		this.color = colors[Math.floor(Math.random()*colors.length)];
+		this.radius = 10;
+	}
+	
+		function moveflipCurves() {
+		context.globalCompositeOperation = "lighter";
+			for(var k = 0; k < flipcurves.length; k++) {
+				var f = flipcurves[k];
+				context.beginPath();
+				context.moveTo(20,30);
+				/*context.lineTo(30,40);
+				context.lineTo(40,20);*/
+				context.arc(f.x, f.y, f.radius, 0, true, degreesToRadians(360));
+				context.closePath();
+				context.fillStyle = f.color;
+				context.fill();
+				f.x += f.vx;
+				f.y += f.vy;
+				if(f.x < -20) f.x = canvas.width+20;
+				if(f.x > canvas.width+20) f.x = -20;
+				if(f.radius > 0) f.radius = 1 ;
+			}
+	}
+	
+///////////////////////Curves////////////////////////	
+	
+		function makeCurves() {
+		for(var j = 0; j < 6; j++) {
+			curves.push(new Curve());
+		}
+	}
+	
 		function Curve() {
 		this.x = Math.round(Math.random())*canvas.width;
 		this.y = Math.round(Math.random())*canvas.height;
@@ -111,27 +182,18 @@
 		this.radius = 20;
 	}
 	
-		function flipCurves() {
-		this.x = Math.round(Math.random())*canvas.width;
-		this.y = Math.round(Math.random())*canvas.height;
-		this.vx = Math.random()*40-10;
-		this.vy = Math.random()*40-10;
-		this.color = colors[Math.floor(Math.random()*colors.length)];
-		this.radius = 20;
-	}
 	
 	function moveCurves() {
-	 	context.globalCompositeOperation = "source-over";
+	 	context.globalCompositeOperation = "lighter";
 		context.fillStyle = "rgba(0, 0, 0, .5)";
-		context.globalCompositeOperation = "lighter";
 			for(var j = 0; j < curves.length; j++) {
 				var c = curves[j];
 				context.beginPath();
 				context.moveTo(110, 90);
 				context.arc(c.x, c.y, c.radius, 0, true, degreesToRadians(360));
-				context.bezierCurveTo(40, 40, 90, 180, 50, 110);
-				context.lineTo(90, 110);
-				context.lineTo(110, 110);
+				/*context.bezierCurveTo(40, 40, 90, 180, 50, 110);*/
+				/*context.lineTo(90, 110);
+				context.lineTo(110, 110);*/
 				context.closePath();
 				context.fillStyle = c.color;
 				context.fill();
@@ -144,69 +206,43 @@
 			}
 	}
 	
-	function moveflipCurves() {
-		context.globalCompositeOperation = "source-over";
-		context.fillStyle = "rgba(0, 0, 0, .5)";
-		context.globalCompositeOperation = "lighter";
-			for(var k = 0; k < flipcurves.length; k++) {
-				var f = flipcurves[k];
-				context.beginPath();
-				context.moveTo(20,30);
-				context.lineTo(30,40);
-				context.lineTo(40,20);
-				context.arc(f.x, f.y, f.radius, 0, true, degreesToRadians(360));
-				context.closePath();
-				context.fillStyle = f.color;
-				context.fill();
-				f.x += f.vx;
-				f.y += f.vy;
-				if(f.x < -20) f.x = canvas.width+20;
-	
-				if(f.x > canvas.width+20) f.x = -20;
-			
-				if(f.radius > 0) f.radius -= 1 ;
-			}
-	}
 	
 ///////////Particles///////////
 
 	function makeParticles() {
-		for(var i = 0; i < 15; i++) {
+		for(var i = 0; i < 25; i++) {
 			particles.push(new Particle());
 		}
 	}
 	
 	function Particle() {
-		this.x = Math.random()*canvas.width;
-		this.y = Math.random()*canvas.height;
-		this.vx = Math.random()*20-5;
-		this.vy = Math.random()*20-5;
+		this.x = Math.random()*canvas.width+5;
+		this.y = Math.random()*canvas.height+5;
+		this.vx = Math.random()*10-5;
+		this.vy = Math.random()*10-5;
 		this.color = colors[Math.floor(Math.random()*colors.length)];
-		this.radius = 100;
+		this.radius = 20;
 	}
 	
 	function moveParticles() {
-		context.globalCompositeOperation = "source-over";
-		context.fillStyle = "rgba(0, 0, 0, .1)";
-		context.globalCompositeOperation = "lighter";
+		context.globalCompositeOperation = "xor";
 			for(var i = 0; i < particles.length; i++) {
 				var p = particles[i];
 				context.beginPath();
-				context.arc(p.x, p.y, p.radius, 20, degreesToRadians(360), true);
-				context.rect(p.x, p.y, p.x, p.y);
+				context.arc(p.x, p.y, p.radius, 60, degreesToRadians(360), true);
 				context.fillStyle = p.color;
 				context.fill();
 				p.x += p.vx;
 				p.y += p.vy;
-				if(p.x < -50) p.x = canvas.width+30;
-				if(p.y < -50) p.y = canvas.height+50;
-				if(p.x > canvas.width+50) p.x = -50;
-				if(p.y > canvas.height-50) p.y = -50;
-				if(p.radius > 0) p.radius -= 1 ;
+				if(p.x < -20) p.x = canvas.width+20;
+				if(p.y < -20) p.y = canvas.height+20;
+				if(p.x > canvas.width+20) p.x = -20;
+				if(p.y > canvas.height-20) p.y = -20;
+				if(p.radius > 1) p.radius -= 1 ;
 			}
 	}
 	
-	
+/////////////////////Circles////////////////////////////////
 	
 	function Circle(x, y, color) {
 		this.x = x;
@@ -251,16 +287,29 @@
 		 circle.y += circle.dy;
 	  }
 	
-
+/////////////////////////External Functions//////////////////////////////
 	
 	function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 		fillBackgroundColor();
+
+		
 		for (var i=0; i<circles.length; i++) {
 			drawCircle(circles[i]);
 		}
-    }
+	
+	}
+		
+	function startPage() {
+	context.fillRect(0,0, 110,190);
+	context.fillStyle='red';
+	context.fill();	
+	}
+
+/////////////////Onload-Staionary Functions///////////////////
+
+	
 	
 	function fillBackgroundColor() {
 	
@@ -269,15 +318,17 @@
 		my_gradient.addColorStop(1,"white");
 		context.fillStyle=my_gradient;
 		context.fillRect(canvas.width, canvas.height, canvas.width, canvas.height);
-	}
+		
+		}
+	
 	
 	window.onload = init;
 	
 	function degreesToRadians(degrees) {
 		return (degrees * Math.PI)/180;
 	}
-
 </script>
+
 <style>
 
 html {
@@ -348,11 +399,15 @@ text-shadow: #bbb 0 0 1px, #fff 0 -1px 2px, #fff 0 -3px 2px, rgba(0,0,0,0.8) 0 3
 #canvas-wrap canvas { position:absolute; top:0; left:0; z-index:0 }
 </style>
 </head>
+
 <body>
 
 <div id="canvas-wrap">
 <canvas id='canvas' width=500 height=500>
+</canvas>
 </div>
+
+
 <div id="box">
   <p id="flashlight">
     <span id="flash">Strobe</span>
@@ -360,10 +415,12 @@ text-shadow: #bbb 0 0 1px, #fff 0 -1px 2px, #fff 0 -3px 2px, rgba(0,0,0,0.8) 0 3
   </p>
 
 </div>
+
 <div id="box2">
 <p id="instru">Click anywhere on the page to create confetti!</p>
 </div>
 
+<canvas id='canvas2' width=500 height=500>
 </canvas>
 
 </body>	  
